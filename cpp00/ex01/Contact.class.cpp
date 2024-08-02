@@ -34,3 +34,24 @@ void Contact::display() const {
     std::cout << "Darkest Secret: " << this->DarkestSecret << std::endl;
 }
 
+void    Contact::display_list(Contact Contact, int list_num)
+{
+	std::cout << "|" << std::right << std::setfill(' ') << std::setw(10) << list_num << "|";
+	truncate(Contact.FirstName);
+	truncate(Contact.LastName);
+	truncate(Contact.NickName);
+	std::cout << std::endl;
+	std::cout << "|" << std::setfill('-') << std::setw(44) << "|" << std::endl;
+}
+
+void    Contact::truncate(const std::string str)
+{
+	if (str.length() <= 10)
+		std::cout << std::right << std::setfill(' ') << std::setw(10) << str << "|";
+	else
+	{
+		for(size_t i = 0; i < 9; i++)
+			std::cout << std::left << std::setw(1) << str[i];
+		std::cout << "." << "|";
+	}
+}

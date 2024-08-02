@@ -19,11 +19,10 @@ void	PhoneBook::starto_program() {
 		if (option == "ADD")
 		{
 			Contacts[i].add_user();
-			display_all(Contacts, i);
 			i++;
 		}
-	//	else if (option == "SEARCH")
-			// do smt
+		else if (option == "SEARCH")
+			 search_user(Contacts, i);
 		else if (option == "EXIT" || std::cin.eof())
 			break;
 		else
@@ -43,3 +42,19 @@ void	PhoneBook::display_all(Contact Contacts[8], size_t i) {
 	}
 }
 
+void	PhoneBook::search_user(Contact Contacts[8], size_t i) {
+	std::string input;
+
+    std::cout << "|" << std::setfill('-') << std::setw(44) << "|" << std::endl;
+    std::cout << "|";
+    Contacts->truncate("index");
+    Contacts->truncate("list first");
+    Contacts->truncate("last name");
+    Contacts->truncate("nickname");
+    std::cout << std::endl;
+    std::cout << "|" << std::setfill('-') << std::setw(44) << "|" << std::endl;
+    for(size_t j = 0; j <= i; j++)
+        Contacts[j].display_list(Contacts[j], j);
+    std::cout << "Please select an user: " << std::endl;
+    getline(std::cin, input);
+}
