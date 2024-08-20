@@ -1,18 +1,25 @@
-#ifndef PHONEBOOK_CLASS_H
-# define PHONEBOOK_CLASS_H
+#ifndef PHONEBOOK_CLASS_HPP
+#define PHONEBOOK_CLASS_HPP
 
-#include <iostream>
 #include "Contact.class.hpp"
+#include <string>
+#include <iostream>
+#include <iomanip>
 
 class PhoneBook {
-	private:
-		Contact Contacts[8];
-	public:
-		void starto_program(void);
-		void search_user(Contact Contacts[8], size_t i);
-		void display_all(Contact Contacts[8], size_t i);
-		PhoneBook(void);
-		~PhoneBook(void);	
+private:
+    Contact contacts[8];
+    int oldestIndex;
+    int contactCount;
+
+    std::string truncate(const std::string &str) const;
+
+public:
+    PhoneBook();
+
+    void addContact();
+    void searchContact() const;
 };
 
 #endif
+

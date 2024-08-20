@@ -31,7 +31,6 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
-	$(RM) $(OBJS)
 	@printf "${GREEN}Executable ${NAME} created successfully!${DEF}\n"
 
 %.o: %.cpp $(HEADERS)

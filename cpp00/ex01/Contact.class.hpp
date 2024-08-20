@@ -1,25 +1,28 @@
 #ifndef CONTACT_CLASS_HPP
 #define CONTACT_CLASS_HPP
 
-#include <iostream>
-#include <iomanip>
 #include <string>
 
 class Contact {
 private:
-    std::string FirstName;
-    std::string LastName;
-    std::string NickName;
-    std::string PhoneNumber;
-    std::string DarkestSecret;
+    std::string firstName;
+    std::string lastName;
+    std::string nickname;
+    std::string phoneNumber;
+    std::string darkestSecret;
 
 public:
-    Contact();
-    ~Contact();
-    void add_user();
-    void display() const; // Method to display the contact information
-	void display_list(Contact Contact, int i);
-	void truncate(const std::string str);
+    void setFirstName(const std::string &fn);
+    void setLastName(const std::string &ln);
+    void setNickname(const std::string &nn);
+    void setPhoneNumber(const std::string &pn);
+    void setDarkestSecret(const std::string &ds);
+
+    std::string getFirstName() const;
+    std::string getLastName() const;
+    std::string getNickname() const;
+    std::string getPhoneNumber() const;
+    std::string getDarkestSecret() const;
 };
 
 #endif

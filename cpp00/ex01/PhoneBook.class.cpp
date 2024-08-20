@@ -1,60 +1,85 @@
 #include "PhoneBook.class.hpp"
 
-PhoneBook::PhoneBook() {
-    std::cout << "PhoneBook constructor called" << std::endl;
+PhoneBook::PhoneBook() : oldestIndex(0), contactCount(0) {}
+
+std::string PhoneBook::truncate(const std::string &str) const {
+    if (str.length() > 10)
+        return str.substr(0, 9) + ".";
+    return str;
 }
 
-PhoneBook::~PhoneBook() {
-    std::cout << "PhoneBook destructor called" << std::endl;
-    // Clean up resources if necessary
+void PhoneBook::addContact() {
+    Contact newContact;
+    std::string input;
+
+    std::cout << "Enter First Name: ";
+    std::getline(std::cin, input);
+    if (input.empty()) return;
+    newContact.setFirstName(input);
+
+    std::cout << "Enter Last Name: ";
+    std::getline(std::cin, input);
+    if (input.empty()) return;
+    newContact.setLastName(input);
+
+    std::cout << "Enter Nickname: ";
+    std::getline(std::cin, input);
+    if (input.empty()) return;
+    newContact.setNickname(input);
+
+    std::cout << "Enter Phone Number: ";
+    std::getline(std::cin, input);
+    if (input.empty()) return;
+    newContact.setPhoneNumber(input);
+
+    std::cout << "Enter Darkest Secret: ";
+    std::getline(std::cin, input);
+    if (input.empty()) return;
+    newContact.setDarkestSecret(input);
+
+    if (contactCount < 8) {
+        contacts[contactCount++] = newContact;
+    } else {
+        contacts[oldestIndex] = newContact;
+        oldestIndex = (oldestIndex + 1) % 8;
+    }
+
+    std::cout << "Contact added successfully.\n";
 }
 
-void	PhoneBook::starto_program() {
-	std::string option;
-	size_t i = 0;
+void PhoneBook::searchContact() const {
+    if (contactCount == 0) {
+        std::cout << "PhoneBook is empty.\n";
+        return;
+    }
 
-	while(1) {
-		std::cout << "Please enter an option: ADD, SEARCH or EXIT" << std::endl;
-		getline(std::cin, option);
-		if (option == "ADD")
-		{
-			Contacts[i].add_user();
-			i++;
-		}
-		else if (option == "SEARCH")
-			 search_user(Contacts, i);
-		else if (option == "EXIT" || std::cin.eof())
-			break;
-		else
-			std::cout << "Invalid input: " << option  << std::endl;
-		if (i == 8)
-			i = 0;
-	}
+    std::cout << std::setw(10) << "Index" << "|"
+              << std::setw(10) << "First Name" << "|"
+              << std::setw(10) << "Last Name" << "|"
+              << std::setw(10) << "Nickname" << std::endl;
+
+    for (int i = 0; i < contactCount; ++i) {
+        std::cout << std::setw(10) << i << "|"
+                  << std::setw(10) << truncate(contacts[i].getFirstName()) << "|"
+                  << std::setw(10) << truncate(contacts[i].getLastName()) << "|"
+                  << std::setw(10) << truncate(contacts[i].getNickname()) << std::endl;
+    }
+
+    std::cout << "Enter index of the contact to view: ";
+    int index;
+    std::cin >> index;
+    std::cin.ignore(); // Clear the newline left in the buffer
+
+    if (std::cin.fail() || index < 0 || index >= contactCount) {
+        std::cin.clear(); // Clear the error flag
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+        std::cout << "Invalid index.\n";
+    } else {
+        std::cout << "First Name: " << contacts[index].getFirstName() << std::endl;
+        std::cout << "Last Name: " << contacts[index].getLastName() << std::endl;
+        std::cout << "Nickname: " << contacts[index].getNickname() << std::endl;
+        std::cout << "Phone Number: " << contacts[index].getPhoneNumber() << std::endl;
+        std::cout << "Darkest Secret: " << contacts[index].getDarkestSecret() << std::endl;
+    }
 }
-void	PhoneBook::display_all(Contact Contacts[8], size_t i) {
-	size_t j = 0;
-	while (j >= i)
-	{
-		std::cout << "Contact: " << i << std::endl;
 
-		Contacts[i].display();
-		j++;
-	}
-}
-
-void	PhoneBook::search_user(Contact Contacts[8], size_t i) {
-	std::string input;
-
-    std::cout << "|" << std::setfill('-') << std::setw(44) << "|" << std::endl;
-    std::cout << "|";
-    Contacts->truncate("index");
-    Contacts->truncate("list first");
-    Contacts->truncate("last name");
-    Contacts->truncate("nickname");
-    std::cout << std::endl;
-    std::cout << "|" << std::setfill('-') << std::setw(44) << "|" << std::endl;
-    for(size_t j = 0; j <= i; j++)
-        Contacts[j].display_list(Contacts[j], j);
-    std::cout << "Please select an user: " << std::endl;
-    getline(std::cin, input);
-}
