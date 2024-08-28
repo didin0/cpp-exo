@@ -15,7 +15,7 @@ PURPLE = \033[035m
 #		VARIABLES
 ######################################
 
-NAME = program
+NAME = sed
 SRCS = $(wildcard *.cpp)
 HEADERS = $(wildcard *.hpp)
 OBJS = $(SRCS:.cpp=.o)
