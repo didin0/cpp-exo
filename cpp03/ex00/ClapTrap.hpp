@@ -3,16 +3,16 @@
 
 #include <iostream>
 
-Class ClapTrap {
+class ClapTrap {
 	public:
 		ClapTrap(std::string name);
 		~ClapTrap();
 		ClapTrap(const ClapTrap& copy);
-		ClapTrap& operator(const ClapTrap& assign);
+		ClapTrap& operator=(const ClapTrap& assign);
 		void attack(const std::string& target);
 		void takeDamage(unsigned int amout);
 		void beRepaired(unsigned int amout);
-		std::string getName();
+		std::string getName() const;
 	private:
 		std::string name;
 		unsigned int HP;
