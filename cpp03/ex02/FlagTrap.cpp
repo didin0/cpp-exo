@@ -12,6 +12,9 @@ FlagTrap::~FlagTrap() {
 }
 
 void FlagTrap::highFivesGuys() {
-	std::cout << this->name << ": positive high fives request" << std::endl;
+	if (this->HP)
+		std::cout << this->name << ": positive high fives request" << std::endl;
+	else
+		std::cout << this->name << ": is DEAD............." << std::endl;
 }
 

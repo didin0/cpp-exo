@@ -25,5 +25,9 @@ void ScravTrap::attack(const std::string& target) {
 }
 
 void ScravTrap::guardGate() {
-	std::cout << this->name << ": is now in Gate keeper mode" << std::endl;
+	if(this->HP)
+		std::cout << this->name << ": is now in Gate keeper mode" << std::endl;
+	else 
+		
+		std::cout << this->name << ": IAM DEAD BRO..." << std::endl;
 }
