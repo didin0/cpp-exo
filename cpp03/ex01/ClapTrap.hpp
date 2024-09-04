@@ -12,9 +12,9 @@ class ClapTrap {
 		void attack(const std::string& target);
 		void takeDamage(unsigned int amout);
 		void beRepaired(unsigned int amout);
-		std::string getName() const;
-	private:
 		std::string name;
+		std::string getName() const;
+	protected:
 		unsigned int HP;
 		unsigned int EP;
 		unsigned int AD;

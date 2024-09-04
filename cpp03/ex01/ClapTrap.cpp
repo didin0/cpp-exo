@@ -45,7 +45,7 @@ void ClapTrap::takeDamage(unsigned int amout) {
 			this->HP = this->HP - this->HP;
 		else
 			this->HP = this->HP - amout;
-		std::cout << this->name << ": took " << amout << " damage, now have " << this->HP << "/10HP" << std::endl;
+		std::cout << this->name << ": took " << amout << " damage, now have " << this->HP << "/100HP" << std::endl;
 	}
 }
 
@@ -55,7 +55,7 @@ void ClapTrap::beRepaired(unsigned int amout) {
 			this->HP = 10;
 		else
 			this->HP += amout;
-		std::cout << this->name << ": healed " << amout << "HP, now have " << this->HP << "/10HP" << std::endl;
+		std::cout << this->name << ": healed " << amout << "HP, now have " << this->HP << "/100HP" << std::endl;
 	}
 	else
 		std::cout << this->name << ": no energy points" << std::endl;

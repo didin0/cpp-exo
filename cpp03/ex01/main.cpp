@@ -1,10 +1,10 @@
 #include "ScravTrap.hpp"
 
 int main() {
-	ClapTrap bob = ScravTrap("bob");
-	ClapTrap obo = ClapTrap("obo");
-	bob.attack("obo");
-	obo.takeDamage(10);
-	obo.beRepaired(999);
+	ScravTrap bob = ScravTrap("bob");
+	bob.attack("random");
+	bob.guardGate();
+	bob.takeDamage(7);
+	bob.beRepaired(1);
 	return 0;
 }
