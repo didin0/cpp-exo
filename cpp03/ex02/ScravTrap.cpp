@@ -1,7 +1,5 @@
 #include "ScravTrap.hpp"
 
-
-
 ScravTrap::ScravTrap(std::string name) : ClapTrap(name) {
 	this->HP = 100;
 	this->EP = 50;
@@ -11,6 +9,19 @@ ScravTrap::ScravTrap(std::string name) : ClapTrap(name) {
 
 ScravTrap::~ScravTrap() {
 	std::cout << name << ": ScravTrap has been destroyed" << std::endl;
+}
+
+ScravTrap::ScravTrap(const ScravTrap& copy) : ClapTrap(copy){
+	this->HP = 100;
+	this->EP = 50;
+	this->AD = 20;
+	this->name = copy.name;
+}
+
+ScravTrap& ScravTrap::operator=(const ScravTrap& assign) {
+	if (this != &assign)
+		ClapTrap::operator=(assign);
+	return *this;
 }
 
 void ScravTrap::attack(const std::string& target) {
@@ -25,9 +36,8 @@ void ScravTrap::attack(const std::string& target) {
 }
 
 void ScravTrap::guardGate() {
-	if(this->HP)
+	if (this->HP)
 		std::cout << this->name << ": is now in Gate keeper mode" << std::endl;
-	else 
-		
-		std::cout << this->name << ": IAM DEAD BRO..." << std::endl;
+	else
+		std::cout << this->name << ": IS DEAD........." << std::endl;
 }
