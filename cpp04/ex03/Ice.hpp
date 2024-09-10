@@ -3,12 +3,12 @@
 
 #include "AMateria.hpp"
 
-class Ice : AMateria("ice") {
+class Ice : public AMateria {
 	public:
 		Ice();
 		~Ice();
-		Ice(const &copy);
-		Ice& operator=(const &assign);
+		Ice(const Ice &copy);
+		Ice& operator=(const Ice &assign);
 		
 		AMateria* clone() const;
 		void use(ICharacter& target);
