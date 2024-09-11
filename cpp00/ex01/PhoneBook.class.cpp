@@ -71,7 +71,7 @@ void PhoneBook::searchContact() const {
 
     if (std::cin.fail() || index < 0 || index >= contactCount) {
         std::cin.clear(); // Clear the error flag
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+        //std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
         std::cout << "Invalid index.\n";
     } else {
         std::cout << "First Name: " << contacts[index].getFirstName() << std::endl;
@@ -80,5 +80,5 @@ void PhoneBook::searchContact() const {
         std::cout << "Phone Number: " << contacts[index].getPhoneNumber() << std::endl;
         std::cout << "Darkest Secret: " << contacts[index].getDarkestSecret() << std::endl;
     }
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
-
