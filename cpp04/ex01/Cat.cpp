@@ -12,6 +12,7 @@ Cat::~Cat() {
 }
 
 Cat::Cat(const Cat& copy) : Animal(copy) {
+	this->brain = new Brain;
 	this->type = "Cat";
 	std::cout << "Constructor by copy for Cat class " << type << std::endl;
 }

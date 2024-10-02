@@ -33,10 +33,10 @@ int Form::getGrade() const {
 }
 
 void Form::beSigned(Bureaucrat &bureaucrat) {
-	if (bureaucrat.getGrade() > grade)
-		throw GradeTooLowException();
-	else
-		sign = true;
+	if (bureaucrat.getGrade() > this->grade) {
+		throw Form::GradeTooLowException();
+	}
+	this->sign = true;
 }
 
 std::ostream& operator<<(std::ostream& os, const Form &form) {

@@ -2,23 +2,27 @@
 #include "Cat.hpp"
 #include <cstdlib>
 
-void Leaks(void)
-{
-    system("leaks brain");
-}
-
 int main ( void )
 {
-     atexit(Leaks);
-    Animal *_Animal  = new Animal[5];
-    for (int i = 0 ; i < 5 ; i++)
-    {
-        if (!(i % 2))
-            _Animal[i] = Cat();
+	Animal* _Animal[5];
+
+	for (int i = 0; i < 5; i++)
+	{
+		if (!(i % 2))
+			_Animal[i] = new Cat();
         else
-            _Animal[i] = Dog();
-    }
-    for (int i = 0; i < 5; i++)
-        std::cout << "Animal type : " << _Animal[i].getType() << std::endl;
-    return (delete[] _Animal, 0);
+			_Animal[i] = new Dog();
+	}
+
+	Dog dog = Dog();
+	Dog dog2 = dog;
+
+	for (int i = 0; i < 5; i++)
+		std::cout << "Animal type : " << _Animal[i]->getType() << std::endl;
+
+	for (int i = 0; i < 5; i++)
+		delete _Animal[i];
+
+	system("leaks brain");
+	return 0;
 }

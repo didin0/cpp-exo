@@ -14,7 +14,7 @@ Character::~Character() {
 
 Character::Character(const Character &copy) : name(copy.name) {
 	for (int i = 0; i < 4; i++) {
-		if (this->inventory[i])
+		if (copy->inventory[i])
 			this->inventory[i] = copy.inventory[i]->clone();
 		else
 			this->inventory[i] = NULL;
