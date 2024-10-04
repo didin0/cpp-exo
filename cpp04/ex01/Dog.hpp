@@ -10,6 +10,8 @@ class Dog : public Animal {
 		virtual ~Dog();
 		Dog(const Dog& copy);
 		Dog& operator=(const Dog& assign);
+		void setBrain(Brain *brain);
+		std::string getIdea(int i) const;
 	private:
 		std::string type;
 		void makeSound() const;

@@ -10,6 +10,8 @@ class Brain {
 		Brain(const Brain& copy);
 		Brain& operator=(const Brain& assign);
 		std::string ideas[100];
+		void setIdea(std::string idea);
+		std::string getIdea(int i) const;
 };
 
 #endif

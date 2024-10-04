@@ -20,7 +20,7 @@ SRCS = $(wildcard *.cpp)
 HEADERS = $(wildcard *.hpp)
 OBJS = $(SRCS:.cpp=.o)
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 #-fno-elide-constructors
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g #-fno-elide-constructors
 RM = rm -f
 
 ######################################

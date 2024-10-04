@@ -14,15 +14,22 @@ int main ( void )
 			_Animal[i] = new Dog();
 	}
 
-	Dog dog = Dog();
-	Dog dog2 = dog;
-
 	for (int i = 0; i < 5; i++)
 		std::cout << "Animal type : " << _Animal[i]->getType() << std::endl;
 
 	for (int i = 0; i < 5; i++)
 		delete _Animal[i];
+	
+	std::cout << "\n ------------ TEST --------------" << std::endl;
 
-	system("leaks brain");
+	Dog dog = Dog();
+	Brain *brain = new Brain();
+	brain->setIdea("Bonjour");
+	brain->setIdea("slt");
+	dog.setBrain(brain);
+	std::cout << "OG dog idea: " << dog.getIdea(0) << std::endl;
+	Dog dog2 = dog;
+	std::cout << "CP dog idea: " << dog2.getIdea(1) << std::endl;
+	
 	return 0;
 }

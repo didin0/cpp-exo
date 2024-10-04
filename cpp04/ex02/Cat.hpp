@@ -10,6 +10,8 @@ class Cat : public Animal {
 		virtual ~Cat();
 		Cat(const Cat& copy);
 		Cat& operator=(const Cat& assign);
+		void setBrain(Brain *brain);
+		std::string getIdea(int i) const;
 	private:
 		std::string type;
 		void makeSound() const;
@@ -17,4 +19,3 @@ class Cat : public Animal {
 };
 
 #endif
-
