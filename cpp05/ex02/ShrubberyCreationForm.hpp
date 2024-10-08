@@ -1,7 +1,9 @@
 #ifndef SHRUBBERYCREATIONFORM_HPP
 # define SHRUBBERYCREATIONFORM_HPP
 
-class SCForm : public Form() {
+#include "AForm.hpp"
+
+class SCForm : public Form {
 	public:
 		SCForm(std::string target);
 		~SCForm();
@@ -9,6 +11,8 @@ class SCForm : public Form() {
 		SCForm& operator=(const SCForm &assign); 
 		
 		void execute(Bureaucrat const &executor) const;
-}
+	private:
+		std::string target;
+};
 
 #endif

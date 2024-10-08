@@ -1,16 +1,28 @@
 #include "AForm.hpp"
 
-Form::Form(const std::string name, const int grade) : name(name), sign(false), grade(grade) {
+Form::Form(const std::string name, const int grade) : name(name), sign(false), grade(grade), gradeExec(1) {
 	if (grade < 1)
 		throw GradeTooHighException();
 	else if (grade > 150)
 		throw GradeTooLowException();
 }
 
+Form::Form(const std::string name, const int grade, const int gradeExec) : name(name), sign(false), grade(grade), gradeExec(gradeExec)
+{
+	if (grade < 1)
+		throw GradeTooHighException();
+	else if (grade > 150)
+		throw GradeTooLowException();
+	if (gradeExec < 1)
+		throw GradeTooHighException();
+	else if (gradeExec > 150)
+		throw GradeTooLowException();
+}
+
 Form::~Form() {
 }
 
-Form::Form(const Form &copy) : name(copy.name), sign(copy.sign), grade(copy.grade) {
+Form::Form(const Form &copy) : name(copy.name), sign(copy.sign), grade(copy.grade), gradeExec(copy.gradeExec) {
 }
 
 Form& Form::operator=(const Form &assign) {
@@ -30,6 +42,10 @@ bool Form::getSign() const {
 
 int Form::getGrade() const {
 	return grade;
+}
+
+int Form::getExecGrade() const {
+	return gradeExec;
 }
 
 void Form::beSigned(Bureaucrat &bureaucrat) {

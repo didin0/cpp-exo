@@ -22,7 +22,7 @@ int main() {
 	me->equip(tmp); // Equip "cure" materia
 
 	// Création d'un autre personnage
-	Character* bob = NULL; //new Character("bob");
+	Character* bob = new Character("bob");
 	// Il n'est pas possible de check si une reference est NULL ????
 
 	// Utilisation des Materias du personnage sur un autre personnage
