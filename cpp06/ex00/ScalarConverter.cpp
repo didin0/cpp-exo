@@ -1,14 +1,21 @@
 #include "ScalarConverter.hpp"
+#include <iostream>
+#include <sstream>
+#include <limits>
+#include <cmath>
 
 bool ScalarConverter::isChar(const std::string &literal) {
     return literal.length() == 1 && std::isprint(literal[0]) && !std::isdigit(literal[0]);
 }
 
+
 bool ScalarConverter::isInt(const std::string &literal) {
-    std::stringstream ss(literal);
-    int value;
-    ss >> value;
-    return !ss.fail() && ss.eof();
+    std::istringstream iss(literal);
+    long long value;
+    iss >> value;
+    return !iss.fail() && iss.eof() &&
+           value <= std::numeric_limits<int>::max() &&
+           value >= std::numeric_limits<int>::min();
 }
 
 bool ScalarConverter::isFloat(const std::string &literal) {
@@ -27,64 +34,99 @@ bool ScalarConverter::isDouble(const std::string &literal) {
     return !ss.fail() && ss.eof();
 }
 
-void ScalarConverter::convert(const std::string &literal) {
+// Convert the literal to various types and display the conversions.
+void ScalarConverter::convert(const std::string& literal) {
+    // Handle special cases: "nan", "nanf", "+inf", "-inf", "+inff", "-inff"
+    if (literal == "nan" || literal == "nanf" || literal == "+inf" || literal == "-inf" ||
+        literal == "+inff" || literal == "-inff") {
+        handleSpecialCases(literal);
+        return;
+    }
+
+    // Check if it is a char
     if (isChar(literal)) {
         char c = literal[0];
-        printChar(c);
-        printInt(static_cast<int>(c));
-        printFloat(static_cast<float>(c));
-        printDouble(static_cast<double>(c));
+        displayConversions(static_cast<int>(c), static_cast<float>(c), static_cast<double>(c), c);
     }
+    // Check if it is an integer
     else if (isInt(literal)) {
-        int i;
-        std::stringstream(literal) >> i;
-        printChar(static_cast<char>(i));
-        printInt(i);
-        printFloat(static_cast<float>(i));
-        printDouble(static_cast<double>(i));
+        std::istringstream iss(literal);
+        long long intValue;
+        iss >> intValue;
+        if (intValue > std::numeric_limits<int>::max() || intValue < std::numeric_limits<int>::min()) {
+            std::cout << "char: impossible" << std::endl;
+            std::cout << "int: non displayable" << std::endl;
+            std::cout << "float: " << static_cast<float>(intValue) << "f" << std::endl;
+            std::cout << "double: " << static_cast<double>(intValue) << std::endl;
+        } else {
+            displayConversions(static_cast<int>(intValue), static_cast<float>(intValue), static_cast<double>(intValue));
+        }
     }
+    // Check if it is a float
     else if (isFloat(literal)) {
         float f;
-        std::stringstream(literal) >> f;
-        printChar(static_cast<char>(f));
-        printInt(static_cast<int>(f));
-        printFloat(f);
-        printDouble(static_cast<double>(f));
+        std::istringstream(literal) >> f;
+        if (f > std::numeric_limits<int>::max() || f < std::numeric_limits<int>::min()) {
+            std::cout << "char: impossible" << std::endl;
+            std::cout << "int: non displayable" << std::endl;
+            displayConversions(0, f, static_cast<double>(f)); // passing 0 as int placeholder
+        } else {
+            displayConversions(static_cast<int>(f), f, static_cast<double>(f));
+        }
     }
+    // Check if it is a double
     else if (isDouble(literal)) {
         double d;
-        std::stringstream(literal) >> d;
-        printChar(static_cast<char>(d));
-        printInt(static_cast<int>(d));
-        printFloat(static_cast<float>(d));
-        printDouble(d);
-    } else {
-        std::cout << "Invalid literal: " << literal << std::endl;
+        std::istringstream(literal) >> d;
+        if (d > std::numeric_limits<int>::max() || d < std::numeric_limits<int>::min()) {
+            std::cout << "char: impossible" << std::endl;
+            std::cout << "int: non displayable" << std::endl;
+            displayConversions(0, static_cast<float>(d), d); // passing 0 as int placeholder
+        } else {
+            displayConversions(static_cast<int>(d), static_cast<float>(d), d);
+        }
+    }
+    // Not a valid type
+    else {
+        std::cerr << "Error: Invalid literal" << std::endl;
     }
 }
 
-void ScalarConverter::printChar(char c) {
+
+// Handle special cases such as "nan" and "inf"
+void ScalarConverter::handleSpecialCases(const std::string& literal) {
+    std::cout << "char: impossible" << std::endl;
+    std::cout << "int: impossible" << std::endl;
+
+    if (literal == "nan" || literal == "nanf") {
+        std::cout << "float: nanf" << std::endl;
+        std::cout << "double: nan" << std::endl;
+    } else if (literal == "+inf" || literal == "+inff") {
+        std::cout << "float: +inff" << std::endl;
+        std::cout << "double: +inf" << std::endl;
+    } else if (literal == "-inf" || literal == "-inff") {
+        std::cout << "float: -inff" << std::endl;
+        std::cout << "double: -inf" << std::endl;
+    }
+}
+
+// Display conversion results for char, int, float, and double
+void ScalarConverter::displayConversions(int i, float f, double d, char c) {
+    // Display char
     if (std::isprint(c))
         std::cout << "char: '" << c << "'" << std::endl;
     else
-        std::cout << "char: Non displayable" << std::endl;
-}
+        std::cout << "char: non displayable" << std::endl;
 
-void ScalarConverter::printInt(int i) {
+    // Display int
     std::cout << "int: " << i << std::endl;
+
+    // Display float and double
+    std::cout << "float: " << f << "f" << std::endl;
+    std::cout << "double: " << d << std::endl;
 }
 
-void ScalarConverter::printFloat(float f) {
-    if (std::isnan(f) || std::isinf(f))
-        std::cout << "float: " << f << "f" << std::endl;
-    else
-        std::cout << "float: " << std::fixed << std::setprecision(1) << f << "f" << std::endl;
+// Overloaded displayConversions without char
+void ScalarConverter::displayConversions(int i, float f, double d) {
+    displayConversions(i, f, d, static_cast<char>(i));
 }
-
-void ScalarConverter::printDouble(double d) {
-    if (std::isnan(d) || std::isinf(d))
-        std::cout << "double: " << d << std::endl;
-    else
-        std::cout << "double: " << std::fixed << std::setprecision(1) << d << std::endl;
-}
-
