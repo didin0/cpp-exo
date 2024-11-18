@@ -3,11 +3,11 @@
 #include <sstream>
 #include <limits>
 #include <cmath>
+#include <iomanip>
 
 bool ScalarConverter::isChar(const std::string &literal) {
     return literal.length() == 1 && std::isprint(literal[0]) && !std::isdigit(literal[0]);
 }
-
 
 bool ScalarConverter::isInt(const std::string &literal) {
     std::istringstream iss(literal);
@@ -81,7 +81,8 @@ void ScalarConverter::convert(const std::string& literal) {
         if (d > std::numeric_limits<int>::max() || d < std::numeric_limits<int>::min()) {
             std::cout << "char: impossible" << std::endl;
             std::cout << "int: non displayable" << std::endl;
-            displayConversions(0, static_cast<float>(d), d); // passing 0 as int placeholder
+            std::cout << "float: " << static_cast<float>(d) << "f" << std::endl;
+            std::cout << "double: " << d << std::endl;
         } else {
             displayConversions(static_cast<int>(d), static_cast<float>(d), d);
         }
@@ -91,7 +92,6 @@ void ScalarConverter::convert(const std::string& literal) {
         std::cerr << "Error: Invalid literal" << std::endl;
     }
 }
-
 
 // Handle special cases such as "nan" and "inf"
 void ScalarConverter::handleSpecialCases(const std::string& literal) {
@@ -113,20 +113,29 @@ void ScalarConverter::handleSpecialCases(const std::string& literal) {
 // Display conversion results for char, int, float, and double
 void ScalarConverter::displayConversions(int i, float f, double d, char c) {
     // Display char
-    if (std::isprint(c))
+    if (i < 0 || i > 127 || !std::isprint(c)) {
+        std::cout << "char: impossible" << std::endl;
+    } else {
         std::cout << "char: '" << c << "'" << std::endl;
-    else
-        std::cout << "char: non displayable" << std::endl;
+    }
 
     // Display int
     std::cout << "int: " << i << std::endl;
 
-    // Display float and double
-    std::cout << "float: " << f << "f" << std::endl;
-    std::cout << "double: " << d << std::endl;
+    // Display float and double with proper formatting
+    if (f == static_cast<int>(f))
+        std::cout << "float: " << f << ".0f" << std::endl;
+    else
+        std::cout << std::fixed << std::setprecision(1) << "float: " << f << "f" << std::endl;
+
+    if (d == static_cast<int>(d))
+        std::cout << "double: " << d << ".0" << std::endl;
+    else
+        std::cout << std::fixed << std::setprecision(1) << "double: " << d << std::endl;
 }
 
 // Overloaded displayConversions without char
 void ScalarConverter::displayConversions(int i, float f, double d) {
     displayConversions(i, f, d, static_cast<char>(i));
 }
+
