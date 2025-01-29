@@ -7,8 +7,7 @@
 #include <iomanip>
 #include <sstream>
 #include <cmath>
-#include <cstdint>
-
+#include <stdint.h>
 
 struct Data {
 	int n;

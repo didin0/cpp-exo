@@ -19,13 +19,17 @@ bool ScalarConverter::isInt(const std::string &literal) {
 }
 
 bool ScalarConverter::isFloat(const std::string &literal) {
-    if (literal.find('f') == std::string::npos)
+    if (literal.empty() || literal[literal.length() - 1] != 'f') // Doit se terminer par 'f'
         return false;
-    std::stringstream ss(literal);
+
+    std::string withoutF = literal.substr(0, literal.length() - 1); // Supprime 'f'
+    std::stringstream ss(withoutF);
     float value;
     ss >> value;
     return !ss.fail() && ss.eof();
 }
+
+
 
 bool ScalarConverter::isDouble(const std::string &literal) {
     std::stringstream ss(literal);
@@ -36,20 +40,18 @@ bool ScalarConverter::isDouble(const std::string &literal) {
 
 // Convert the literal to various types and display the conversions.
 void ScalarConverter::convert(const std::string& literal) {
-    // Handle special cases: "nan", "nanf", "+inf", "-inf", "+inff", "-inff"
+    // Cas spéciaux
     if (literal == "nan" || literal == "nanf" || literal == "+inf" || literal == "-inf" ||
         literal == "+inff" || literal == "-inff") {
         handleSpecialCases(literal);
         return;
     }
 
-    // Check if it is a char
+    // Détection et conversion
     if (isChar(literal)) {
         char c = literal[0];
         displayConversions(static_cast<int>(c), static_cast<float>(c), static_cast<double>(c), c);
-    }
-    // Check if it is an integer
-    else if (isInt(literal)) {
+    } else if (isInt(literal)) {
         std::istringstream iss(literal);
         long long intValue;
         iss >> intValue;
@@ -61,21 +63,19 @@ void ScalarConverter::convert(const std::string& literal) {
         } else {
             displayConversions(static_cast<int>(intValue), static_cast<float>(intValue), static_cast<double>(intValue));
         }
-    }
-    // Check if it is a float
-    else if (isFloat(literal)) {
-        float f;
-        std::istringstream(literal) >> f;
+    } else if (isFloat(literal)) {
+        std::string withoutF = literal.substr(0, literal.length() - 1); // Supprime le 'f'
+        double f;
+        std::istringstream(withoutF) >> f;
         if (f > std::numeric_limits<int>::max() || f < std::numeric_limits<int>::min()) {
             std::cout << "char: impossible" << std::endl;
             std::cout << "int: non displayable" << std::endl;
-            displayConversions(0, f, static_cast<double>(f)); // passing 0 as int placeholder
+			std::cout << "float: " << static_cast<float>(f) << "f" << std::endl;
+            std::cout << "double: " << f << std::endl;
         } else {
             displayConversions(static_cast<int>(f), f, static_cast<double>(f));
         }
-    }
-    // Check if it is a double
-    else if (isDouble(literal)) {
+    } else if (isDouble(literal)) {
         double d;
         std::istringstream(literal) >> d;
         if (d > std::numeric_limits<int>::max() || d < std::numeric_limits<int>::min()) {
@@ -86,12 +86,11 @@ void ScalarConverter::convert(const std::string& literal) {
         } else {
             displayConversions(static_cast<int>(d), static_cast<float>(d), d);
         }
-    }
-    // Not a valid type
-    else {
+    } else {
         std::cerr << "Error: Invalid literal" << std::endl;
     }
 }
+
 
 // Handle special cases such as "nan" and "inf"
 void ScalarConverter::handleSpecialCases(const std::string& literal) {
