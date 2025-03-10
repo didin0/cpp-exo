@@ -20,7 +20,7 @@ SRCS = $(wildcard *.cpp)
 HEADERS = $(wildcard *.hpp)
 OBJS = $(SRCS:.cpp=.o)
 CXX = c++
-CXXFLAGS = #-Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 RM = rm -f
 
 ######################################
