@@ -1,9 +1,7 @@
 #include "PmergeMe.hpp"
-#include <exception>
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
 #include <algorithm>
-#include <utility>
 
 PmergeMe::PmergeMe(char **argv)
 {
@@ -16,37 +14,32 @@ PmergeMe::PmergeMe(char **argv)
     }
 }
 
-PmergeMe::~PmergeMe()
-{
-}
+PmergeMe::~PmergeMe() {}
 
-PmergeMe::PmergeMe(const PmergeMe &other) : _numbers(other._numbers)
-{
-}
+PmergeMe::PmergeMe(const PmergeMe &other) : _numbers(other._numbers) {}
 
 PmergeMe &PmergeMe::operator=(const PmergeMe &other)
 {
     if (this != &other)
-    {
         _numbers = other._numbers;
-    }
     return *this;
 }
 
 void PmergeMe::printNumbers() const
 {
     for (size_t i = 0; i < _numbers.size(); ++i)
-    {
         std::cout << _numbers[i] << " ";
-    }
     std::cout << std::endl;
 }
 
-void PmergeMe::sortPairs(std::vector<int> &tab, std::vector<std::pair<int, int> > &pairs, bool &impair, int &elementImpair)
+void PmergeMe::sortPairs(const std::vector<int> &tab,
+                         std::vector<std::pair<int, int> > &pairs,
+                         bool &hasOdd,
+                         int &oddElement)
 {
     size_t size = tab.size();
-    impair = (size % 2 != 0);
-    size_t limit = impair ? size - 1 : size;
+    hasOdd = (size % 2 != 0);
+    size_t limit = hasOdd ? size - 1 : size;
 
     for (size_t i = 0; i < limit; i += 2)
     {
@@ -54,71 +47,41 @@ void PmergeMe::sortPairs(std::vector<int> &tab, std::vector<std::pair<int, int> 
         int b = tab[i + 1];
         if (a > b)
             std::swap(a, b);
-
         pairs.push_back(std::make_pair(a, b));
     }
 
-    if (impair)
-        elementImpair = tab[size - 1];
+    if (hasOdd)
+        oddElement = tab[size - 1];
 }
 
-void PmergeMe::mergePairs(std::vector<std::pair<int, int> > &pairs)
+std::vector<size_t> PmergeMe::generateJacobsthalIndices(size_t n)
 {
-    for (size_t i = 0; i + 1 < pairs.size(); ++i)
-    {
-        // Compare le dernier élément de la paire actuelle avec le premier élément de la paire suivante
-        if (pairs[i].second > pairs[i + 1].first)
-        {
-            std::swap(pairs[i].second, pairs[i + 1].first);
-        }
-    }
-}
-
-std::vector<size_t> PmergeMe::generateJacobsthalIndices(size_t n) {
     std::vector<size_t> indices;
-    std::vector<size_t> jacobsthal;
-    jacobsthal.push_back(0);
-    jacobsthal.push_back(1);
+    std::vector<size_t> jacob;
 
-    while (jacobsthal.back() < n) {
-        jacobsthal.push_back(jacobsthal[jacobsthal.size() - 1] + 2 * jacobsthal[jacobsthal.size() - 2]);
-    }
+    jacob.push_back(0);
+    jacob.push_back(1);
+    while (jacob.back() < n)
+        jacob.push_back(jacob[jacob.size() - 1] + 2 * jacob[jacob.size() - 2]);
 
-    // Ajout sans doublons
-    for (size_t i = jacobsthal.size() - 1; i > 0; --i) {
-        if (jacobsthal[i] < n && jacobsthal[i] != 0 &&
-            std::find(indices.begin(), indices.end(), jacobsthal[i]) == indices.end())
-        {
-            indices.push_back(jacobsthal[i]);
-        }
-    }
+    for (size_t i = jacob.size(); i-- > 0;)
+        if (jacob[i] < n && std::find(indices.begin(), indices.end(), jacob[i]) == indices.end())
+            indices.push_back(jacob[i]);
 
-    // Ajouter les indices manquants
-    for (size_t i = 1; i < n; ++i) {
+    for (size_t i = 0; i < n; ++i)
         if (std::find(indices.begin(), indices.end(), i) == indices.end())
             indices.push_back(i);
-    }
 
     return indices;
 }
 
-
-
 void PmergeMe::insertPetits(const std::vector<int> &petits, std::vector<int> &sorted)
 {
-    if (petits.empty())
-        return;
+    std::vector<size_t> order = generateJacobsthalIndices(petits.size());
 
-    // Insère d'abord petits[0] pour initialiser
-    std::vector<int>::iterator pos0 = std::lower_bound(sorted.begin(), sorted.end(), petits[0]);
-    sorted.insert(pos0, petits[0]);
-
-    // Génère l’ordre Jacobsthal pour les suivants
-    std::vector<size_t> insertionOrder = generateJacobsthalIndices(petits.size());
-
-    for (size_t i = 0; i < insertionOrder.size(); ++i)
+    for (size_t i = 0; i < order.size(); ++i)
     {
-        size_t idx = insertionOrder[i];
+        size_t idx = order[i];
         if (idx >= petits.size())
             continue;
 
@@ -126,59 +89,35 @@ void PmergeMe::insertPetits(const std::vector<int> &petits, std::vector<int> &so
         std::vector<int>::iterator pos = std::lower_bound(sorted.begin(), sorted.end(), value);
         sorted.insert(pos, value);
     }
-
-    // Debugging output
-    std::cout << "Ordre d'insertion Jacobsthal : ";
-    for (size_t i = 0; i < insertionOrder.size(); ++i) {
-        std::cout << insertionOrder[i] << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "Petits : ";
-    for (size_t i = 0; i < petits.size(); ++i) {
-        std::cout << petits[i] << " ";
-    }
-    std::cout << std::endl;
-
-    std::cout << "Tableau trié après insertion : ";
-    for (size_t i = 0; i < sorted.size(); ++i) {
-        std::cout << sorted[i] << " ";
-    }
-    std::cout << std::endl;
 }
 
-
-void PmergeMe::fordJohnsonSort(std::vector<int>& tab)
+void PmergeMe::fordJohnsonSort(std::vector<int> &tab)
 {
     if (tab.size() <= 1)
         return;
 
-    bool impair;
-    int elementImpair;
+    bool hasOdd;
+    int oddElement;
     std::vector<std::pair<int, int> > pairs;
 
-    // Étape 1 : créer les paires (min, max)
-    sortPairs(tab, pairs, impair, elementImpair);
+    sortPairs(tab, pairs, hasOdd, oddElement);
 
-    std::vector<int> petits;
-    std::vector<int> grands;
+    std::vector<int> petits, grands;
     for (size_t i = 0; i < pairs.size(); ++i)
     {
         petits.push_back(pairs[i].first);
         grands.push_back(pairs[i].second);
     }
 
-    // Étape 2 : tri récursif des grands
     fordJohnsonSort(grands);
 
-    // Étape 3 : insertion des petits
     std::vector<int> sorted = grands;
     insertPetits(petits, sorted);
 
-    // Étape 4 : élément impair
-    if (impair) {
-        std::vector<int>::iterator pos = std::lower_bound(sorted.begin(), sorted.end(), elementImpair);
-        sorted.insert(pos, elementImpair);
+    if (hasOdd)
+    {
+        std::vector<int>::iterator pos = std::lower_bound(sorted.begin(), sorted.end(), oddElement);
+        sorted.insert(pos, oddElement);
     }
 
     tab = sorted;
@@ -194,11 +133,7 @@ void PmergeMe::fordJohnsonSort(std::vector<int>& tab)
 
 void PmergeMe::sort()
 {
-    printNumbers();
-    std::vector<int> sorted = _numbers;
-    fordJohnsonSort(sorted);
-    _numbers = sorted;
-    printNumbers();
+    printNumbers(); // Avant tri
+    fordJohnsonSort(_numbers);
+    printNumbers(); // Après tri
 }
-
-
