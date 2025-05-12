@@ -2,10 +2,12 @@
 #define PMERGEME_HPP
 
 #include <vector>
+#include <deque>
 #include <string>
 #include <stdexcept>
 #include <utility>
 #include <cstddef>
+#include <ctime>
 
 class PmergeMe
 {
@@ -15,15 +17,23 @@ public:
     PmergeMe(const PmergeMe &other);
     PmergeMe &operator=(const PmergeMe &other);
 
-    void sort();
+    void sortAndCompare();
 
 private:
     std::vector<int> _numbers;
-    void printNumbers() const;
-    void fordJohnsonSort(std::vector<int> &tab);
-    void sortPairs(const std::vector<int> &tab, std::vector<std::pair<int, int> > &pairs, bool &hasOdd, int &oddElement);
+
+    void printSequence(const std::vector<int> &container) const;
+
+    template <typename Container>
+    void fordJohnsonSort(Container &tab);
+
+    template <typename Container>
+    void sortPairs(const Container &tab, std::vector<std::pair<int, int> > &pairs, bool &hasOdd, int &oddElement);
+
     std::vector<size_t> generateJacobsthalIndices(size_t n);
-    void insertPetits(const std::vector<int> &petits, std::vector<int> &sorted);
+
+    template <typename Container>
+    void insertPetits(const Container &petits, Container &sorted);
 };
 
-#endif
+#endif // PMERGEME_HPP

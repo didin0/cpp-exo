@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     try
     {
         PmergeMe pmerge(argv);
-        pmerge.sort();
+        pmerge.sortAndCompare();
     }
     catch (const std::exception &e)
     {
