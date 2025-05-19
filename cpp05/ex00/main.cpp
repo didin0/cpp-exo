@@ -31,6 +31,7 @@ int main() {
         // Test 6: Increment Bureaucrat grade to trigger GradeTooHighException
         try {
             Bureaucrat topRank("Eve", 1);
+            std::cout << topRank << std::endl;
             topRank.increment();
         } catch (const std::exception &e) {
             std::cerr << "Exception caught: " << e.what() << std::endl;
@@ -39,6 +40,7 @@ int main() {
         // Test 7: Decrement Bureaucrat grade to trigger GradeTooLowException
         try {
             Bureaucrat bottomRank("Charlie", 150);
+            std::cout << bottomRank << std::endl;
             bottomRank.decrement();
         } catch (const std::exception &e) {
             std::cerr << "Exception caught: " << e.what() << std::endl;

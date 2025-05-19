@@ -10,8 +10,9 @@ class Form {
 		const std::string name;
 		bool sign;
 		const int grade;
+		const int gradeExec;
 	public:
-		Form(const std::string name, const int grade);
+		Form(const std::string name, const int grade, const int gradeExec);
 		~Form();
 		Form(const Form &copy);
 		Form& operator=(const Form &assign);	
@@ -19,8 +20,10 @@ class Form {
 		std::string getName() const;
 		bool getSign() const;
 		int getGrade() const;
+		int getGradeExec() const;
 		
 		void beSigned(Bureaucrat &bureaucrat);
+		void execute(const Bureaucrat &executor) const;
 
 		class GradeTooHighException : public std::exception {
 			public:
