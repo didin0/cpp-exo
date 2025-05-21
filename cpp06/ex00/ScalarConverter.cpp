@@ -57,7 +57,7 @@ void ScalarConverter::convert(const std::string& literal) {
         iss >> intValue;
         if (intValue > std::numeric_limits<int>::max() || intValue < std::numeric_limits<int>::min()) {
             std::cout << "char: impossible" << std::endl;
-            std::cout << "int: non displayable" << std::endl;
+            std::cout << "int: overflow" << std::endl;
             std::cout << "float: " << static_cast<float>(intValue) << "f" << std::endl;
             std::cout << "double: " << static_cast<double>(intValue) << std::endl;
         } else {
@@ -69,7 +69,7 @@ void ScalarConverter::convert(const std::string& literal) {
         std::istringstream(withoutF) >> f;
         if (f > std::numeric_limits<int>::max() || f < std::numeric_limits<int>::min()) {
             std::cout << "char: impossible" << std::endl;
-            std::cout << "int: non displayable" << std::endl;
+            std::cout << "int: overflow" << std::endl;
 			std::cout << "float: " << static_cast<float>(f) << "f" << std::endl;
             std::cout << "double: " << f << std::endl;
         } else {
@@ -80,7 +80,7 @@ void ScalarConverter::convert(const std::string& literal) {
         std::istringstream(literal) >> d;
         if (d > std::numeric_limits<int>::max() || d < std::numeric_limits<int>::min()) {
             std::cout << "char: impossible" << std::endl;
-            std::cout << "int: non displayable" << std::endl;
+            std::cout << "int: overflow" << std::endl;
             std::cout << "float: " << static_cast<float>(d) << "f" << std::endl;
             std::cout << "double: " << d << std::endl;
         } else {
@@ -112,10 +112,13 @@ void ScalarConverter::handleSpecialCases(const std::string& literal) {
 // Display conversion results for char, int, float, and double
 void ScalarConverter::displayConversions(int i, float f, double d, char c) {
     // Display char
-    if (i < 0 || i > 127 || !std::isprint(c)) {
+    if (i < 0 || i > 127) {
         std::cout << "char: impossible" << std::endl;
     } else {
-        std::cout << "char: '" << c << "'" << std::endl;
+        if (std::isprint(c))
+            std::cout << "char: '" << c << "'" << std::endl;
+        else
+            std::cout << "char: non displayable" << std::endl;
     }
 
     // Display int
