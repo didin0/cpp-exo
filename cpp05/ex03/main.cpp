@@ -1,59 +1,39 @@
-#include "ShrubberyCreationForm.hpp"
+#include "Intern.hpp"
 #include "Bureaucrat.hpp"
-#include "PresidentialPardonForm.hpp"
+#include "ShrubberyCreationForm.hpp"
 #include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
 
 int main() {
-std::cout << "----\n"; // ShrubberyCreationForm	
-	try {
-        Bureaucrat bob("Bob", 100);
-        SCForm shrubbery("home");
+    Intern someRandomIntern;
+    Form* form;
 
-        std::cout << shrubbery << std::endl;
-
-        // Bob signs the form
-        bob.signForm(shrubbery);
-
-        // Bob tries to execute the form
-        bob.executeForm(shrubbery);
-
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
-    }
-std::cout << "----\n"; // RobotomyRequestForm
-    try {
-        Bureaucrat bob("Bob", 72);
-        RRForm robotomy("Bob");
-
-        std::cout << robotomy << std::endl;
-
-        // Bob signs the form
-        bob.signForm(robotomy);
-
-        // Bob tries to execute the form
-        bob.executeForm(robotomy);
-
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
-    }
-std::cout << "----\n"; // PresidentialPardonForm
-    try {
-        Bureaucrat bob("Bob", 5);
-        PPForm pardon("Bob");
-
-        std::cout << pardon << std::endl;
-
-        // Bob signs the form
-        bob.signForm(pardon);
-
-        // Bob tries to execute the form
-        bob.executeForm(pardon);
-
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
+    // Test 1: ShrubberyCreationForm
+    form = someRandomIntern.makeForm("shrubbery creation", "garden");
+    if (form) {
+        std::cout << *form << std::endl;
+        delete form; // Libérer la mémoire
     }
 
+    // Test 2: RobotomyRequestForm
+    form = someRandomIntern.makeForm("robotomy request", "Bender");
+    if (form) {
+        std::cout << *form << std::endl;
+        delete form; // Libérer la mémoire
+    }
+
+    // Test 3: PresidentialPardonForm
+    form = someRandomIntern.makeForm("presidential pardon", "criminal");
+    if (form) {
+        std::cout << *form << std::endl;
+        delete form; // Libérer la mémoire
+    }
+
+    // Test 4: Formulaire invalide
+    form = someRandomIntern.makeForm("invalid form", "target");
+    if (!form) {
+        std::cout << "Invalid form creation handled correctly." << std::endl;
+    }
 
     return 0;
 }
-
