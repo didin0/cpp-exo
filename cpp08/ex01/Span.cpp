@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <climits>
 #include <iostream>
+#include <numeric>
 
 Span::Span()
 {
@@ -56,21 +57,19 @@ void Span::addNumbers(std::vector<int>::iterator begin, std::vector<int>::iterat
 
 int Span::shortestSpan()
 {
+    if (_container.size() < 2) {
+        throw std::runtime_error("0 or 1 element");
+    }
+
+    // Trier le conteneur
     std::sort(_container.begin(), _container.end());
 
-    int minSpan = INT_MAX;
+    // Calculer les différences entre les éléments adjacents
+    std::vector<int> differences(_container.size());
+    std::adjacent_difference(_container.begin(), _container.end(), differences.begin());
 
-    if (_container.size() > 2) {
-        for (size_t i = 1; i < _container.size(); ++i)
-        {
-            int span = _container[i] - _container[i - 1];
-            if (span < minSpan)
-                minSpan = span;
-        }
-        return minSpan;
-    }
-    else
-        throw std::runtime_error("0 or 1 element");
+    // Ignorer la première valeur de differences (elle est toujours 0)
+    return *std::min_element(differences.begin() + 1, differences.end());
 }
 
 int Span::longestSpan()
