@@ -44,6 +44,16 @@ void Span::addNumber(int n)
         throw std::runtime_error("size already max");
 }
 
+void Span::addNumbers(std::vector<int>::iterator begin, std::vector<int>::iterator end) {
+    size_t rangeSize = std::distance(begin, end);
+
+    if (_container.size() + rangeSize > _size) {
+        throw std::runtime_error("Adding these numbers would exceed the maximum size of the Span");
+    }
+
+    _container.insert(_container.end(), begin, end);
+}
+
 int Span::shortestSpan()
 {
     std::sort(_container.begin(), _container.end());

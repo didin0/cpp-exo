@@ -1,22 +1,20 @@
-#include <iostream>
 #include "Span.hpp"
-#include <exception>
+#include <iostream>
+#include <vector>
 
-int main()
-{
-    Span sp = Span(5);
-    try {
+int main() {
+    Span sp(10);
 
-    sp.addNumber(58);
-    sp.addNumber(2);
-    sp.addNumber(4);
-    sp.addNumber(8);
-    sp.addNumber(16);
-    std::cout << sp.shortestSpan() << std::endl;
-    std::cout << sp.longestSpan() << std::endl;
-    }
-    catch (std::exception &e) {
-       std::cout << e.what() << std::endl;
-    }
+    sp.addNumber(5);
+    sp.addNumber(10);
+
+    int arr[] = {20, 30, 40, 50};
+    std::vector<int> numbers(arr, arr + sizeof(arr) / sizeof(arr[0]));
+
+    sp.addNumbers(numbers.begin(), numbers.end());
+
+    std::cout << "Shortest span: " << sp.shortestSpan() << std::endl;
+    std::cout << "Longest span: " << sp.longestSpan() << std::endl;
+
     return 0;
 }
