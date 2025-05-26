@@ -1,5 +1,3 @@
-#pragma once
-
 template <typename T>
 class Array {
 private:
@@ -38,6 +36,9 @@ public:
     }
 
     T& operator[](unsigned int index) {
+        if (!_data) {
+            throw std::runtime_error("Array is uninitialized");
+        }
         if (index >= _size) {
             throw std::out_of_range("Index out of bounds");
         }
@@ -45,6 +46,9 @@ public:
     }
 
     const T& operator[](unsigned int index) const {
+        if (!_data) {
+            throw std::runtime_error("Array is uninitialized");
+        }
         if (index >= _size) {
             throw std::out_of_range("Index out of bounds");
         }
