@@ -61,23 +61,21 @@ int Span::shortestSpan()
         throw std::runtime_error("0 or 1 element");
     }
 
-    // Trier le conteneur
     std::sort(_container.begin(), _container.end());
 
-    // Calculer les différences entre les éléments adjacents
     std::vector<int> differences(_container.size());
     std::adjacent_difference(_container.begin(), _container.end(), differences.begin());
 
-    // Ignorer la première valeur de differences (elle est toujours 0)
     return *std::min_element(differences.begin() + 1, differences.end());
 }
 
 int Span::longestSpan()
 {
-    int min = *min_element(_container.begin(), _container.end());
-    int max = *max_element(_container.begin(), _container.end());
-    if (_container.size() > 2)
-        return (max - min);
-    else
+    if (_container.size() < 2) {
         throw std::runtime_error("0 or 1 element");
+    }
+
+    int min = *std::min_element(_container.begin(), _container.end());
+    int max = *std::max_element(_container.begin(), _container.end());
+    return max - min;
 }
